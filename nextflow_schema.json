@@ -1,0 +1,91 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://raw.githubusercontent.com/ha7332296-design/anoda/main/nextflow_schema.json",
+    "title": "VF & ARG Detection Pipeline Parameters",
+    "description": "Detect Virulence Factors and Antimicrobial Resistance Genes from MAGs",
+    "type": "object",
+    "$defs": {
+        "input_output_options": {
+            "title": "Input/output options",
+            "type": "object",
+            "required": ["input", "outdir"],
+            "properties": {
+                "input": {
+                    "type": "string",
+                    "format": "file-path",
+                    "pattern": "^\\S+\\.csv$",
+                    "description": "Path to samplesheet CSV with columns: sample, fasta"
+                },
+                "outdir": {
+                    "type": "string",
+                    "format": "directory-path",
+                    "default": "results",
+                    "description": "Output directory for results"
+                }
+            }
+        },
+        "vf_options": {
+            "title": "Virulence factor detection",
+            "type": "object",
+            "properties": {
+                "vf_db": {
+                    "type": "string",
+                    "default": "vfdb",
+                    "enum": ["vfdb"],
+                    "description": "ABRicate database for virulence factor detection"
+                },
+                "vf_min_id": {
+                    "type": "integer",
+                    "default": 80,
+                    "minimum": 1,
+                    "maximum": 100,
+                    "description": "Minimum percent identity for VF hits"
+                },
+                "vf_min_cov": {
+                    "type": "integer",
+                    "default": 80,
+                    "minimum": 1,
+                    "maximum": 100,
+                    "description": "Minimum percent coverage for VF hits"
+                }
+            }
+        },
+        "arg_options": {
+            "title": "Antimicrobial resistance gene detection",
+            "type": "object",
+            "properties": {
+                "arg_tool": {
+                    "type": "string",
+                    "default": "abricate",
+                    "enum": ["abricate", "amrfinderplus"],
+                    "description": "Tool for ARG detection"
+                },
+                "arg_db": {
+                    "type": "string",
+                    "default": "card",
+                    "enum": ["card", "resfinder", "ncbi", "argannot"],
+                    "description": "ABRicate database for ARG detection (used when arg_tool=abricate)"
+                },
+                "arg_min_id": {
+                    "type": "integer",
+                    "default": 80,
+                    "minimum": 1,
+                    "maximum": 100,
+                    "description": "Minimum percent identity for ARG hits"
+                },
+                "arg_min_cov": {
+                    "type": "integer",
+                    "default": 80,
+                    "minimum": 1,
+                    "maximum": 100,
+                    "description": "Minimum percent coverage for ARG hits"
+                }
+            }
+        }
+    },
+    "allOf": [
+        { "$ref": "#/$defs/input_output_options" },
+        { "$ref": "#/$defs/vf_options" },
+        { "$ref": "#/$defs/arg_options" }
+    ]
+}
