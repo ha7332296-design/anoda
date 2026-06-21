@@ -1,0 +1,23 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "VF & ARG Pipeline - Samplesheet Schema",
+    "description": "Schema for the input samplesheet",
+    "type": "array",
+    "items": {
+        "type": "object",
+        "required": ["sample", "fasta"],
+        "properties": {
+            "sample": {
+                "type": "string",
+                "description": "Sample identifier (used as prefix in output files)",
+                "pattern": "^[a-zA-Z0-9_\\-]+$"
+            },
+            "fasta": {
+                "type": "string",
+                "description": "Path to MAG FASTA file",
+                "format": "file-path",
+                "pattern": "^\\S+\\.(fa|fasta|fna)(\\.gz)?$"
+            }
+        }
+    }
+}
